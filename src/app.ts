@@ -1,5 +1,5 @@
 import { App } from "@aws-cdk/core";
-import { LambdaCron } from "./lib/LambdaCron";
+import { LambdaCron } from "./stacks/LambdaCron";
 import { join } from "path";
 import { ENV } from "./lib/Env";
 import { Event } from "./lambdas/discord";
