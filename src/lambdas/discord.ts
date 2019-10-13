@@ -9,19 +9,27 @@ export interface Event {
 }
 
 const post = (url: string, body: unknown) =>
-  new Promise((res, rej) => {
-    const payload = JSON.stringify(body);
+  new Promise((resolve, reject) => {
+    const req = https.request(
+      url,
+      { method: "POST", headers: { "Content-Type": "application/json" } },
+      response => {
+        response.setEncoding("utf8");
+        response.on("data", resolve);
 
-    const req = https.request(url, {
-      headers: {
-        "Content-Type": "application/json"
+        response.on("end", () => {
+          if (response.statusCode !== 200) {
+            reject(
+              Error(`API responded with statuscode ${response.statusCode}`)
+            );
+          }
+        });
       }
-    });
+    );
 
-    req.on("error", rej);
-    req.on("data", res);
+    req.on("error", reject);
 
-    req.write(payload);
+    req.write(JSON.stringify(body));
     req.end();
   });
 
