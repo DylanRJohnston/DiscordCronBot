@@ -16,4 +16,4 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
       - run: yarn build
-      - run: ./node_modules/.bin/cdk deploy
+      - run: yarn cdk deploy --require-approval=never
